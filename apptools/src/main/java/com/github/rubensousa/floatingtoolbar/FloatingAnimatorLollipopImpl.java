@@ -26,7 +26,7 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 
-import libs.espressif.R;
+import com.espressif.espblemesh.apptools.R;
 
 
 class FloatingAnimatorLollipopImpl extends FloatingAnimator {

@@ -2,13 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'io.objectbox'
 
 android {
-    compileSdkVersion 28
+    namespace "com.espressif.blemesh"
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 34
     }
 
     buildTypes {
@@ -18,9 +17,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
 }
 
 dependencies {

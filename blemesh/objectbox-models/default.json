@@ -10,24 +10,31 @@
       "properties": [
         {
           "id": "1:1301920518958134531",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
           "id": "2:5950800670900349273",
-          "name": "model_id"
+          "name": "model_id",
+          "type": 9
         },
         {
           "id": "3:4907813123461298155",
+          "name": "element_address",
           "indexId": "1:155027257750053019",
-          "name": "element_address"
+          "type": 6,
+          "flags": 8
         },
         {
           "id": "4:8788173014349650800",
-          "name": "node_mac"
+          "name": "node_mac",
+          "type": 9
         },
         {
           "id": "5:8275122333162872768",
-          "name": "app_key_index"
+          "name": "app_key_index",
+          "type": 6
         }
       ],
       "relations": []
@@ -39,15 +46,19 @@
       "properties": [
         {
           "id": "1:872174656606651094",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 129
         },
         {
           "id": "2:5770550378572111516",
-          "name": "name"
+          "name": "name",
+          "type": 9
         },
         {
           "id": "3:6045442459473603159",
-          "name": "netkey_index"
+          "name": "netkey_index",
+          "type": 6
         }
       ],
       "relations": []
@@ -59,15 +70,19 @@
       "properties": [
         {
           "id": "1:8967842360434541377",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
           "id": "2:9110656054645983068",
-          "name": "app_key_index"
+          "name": "app_key_index",
+          "type": 6
         },
         {
           "id": "3:1663549816961624371",
-          "name": "node_mac"
+          "name": "node_mac",
+          "type": 9
         }
       ],
       "relations": []
@@ -79,16 +94,21 @@
       "properties": [
         {
           "id": "1:56010450514491299",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 129
         },
         {
           "id": "2:467450872941602970",
+          "name": "node_mac",
           "indexId": "2:2488522852909612091",
-          "name": "node_mac"
+          "type": 9,
+          "flags": 2048
         },
         {
           "id": "3:3705579255937891389",
-          "name": "loc"
+          "name": "loc",
+          "type": 6
         }
       ],
       "relations": []
@@ -100,16 +120,21 @@
       "properties": [
         {
           "id": "1:4694918651996866799",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 129
         },
         {
           "id": "2:4938471764243248613",
+          "name": "key",
           "indexId": "3:7544547286214163827",
-          "name": "key"
+          "type": 9,
+          "flags": 2080
         },
         {
           "id": "3:6689982252860323717",
-          "name": "unicast_addr"
+          "name": "unicast_addr",
+          "type": 6
         }
       ],
       "relations": []
@@ -121,56 +146,71 @@
       "properties": [
         {
           "id": "1:906923565618006442",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
           "id": "2:5607609031695884805",
+          "name": "mac",
           "indexId": "4:4507342942432212919",
-          "name": "mac"
+          "type": 9,
+          "flags": 2080
         },
         {
           "id": "3:7697764038133259269",
-          "name": "uuid"
+          "name": "uuid",
+          "type": 9
         },
         {
           "id": "4:1194382858490271851",
-          "name": "key"
+          "name": "key",
+          "type": 9
         },
         {
           "id": "5:1568631413858807927",
-          "name": "name"
+          "name": "name",
+          "type": 9
         },
         {
           "id": "6:998133401571242169",
-          "name": "unicast_addr"
+          "name": "unicast_addr",
+          "type": 6
         },
         {
           "id": "7:1080300240579466988",
-          "name": "element_count"
+          "name": "element_count",
+          "type": 5
         },
         {
           "id": "8:1825021940588926851",
-          "name": "netkey_index"
+          "name": "netkey_index",
+          "type": 6
         },
         {
           "id": "9:6545649971534249094",
-          "name": "cid"
+          "name": "cid",
+          "type": 6
         },
         {
           "id": "10:6246274715117353556",
-          "name": "pid"
+          "name": "pid",
+          "type": 6
         },
         {
           "id": "11:8062947714168814042",
-          "name": "vid"
+          "name": "vid",
+          "type": 6
         },
         {
           "id": "12:885195792219467527",
-          "name": "crpl"
+          "name": "crpl",
+          "type": 6
         },
         {
           "id": "13:4295106161831080736",
-          "name": "features"
+          "name": "features",
+          "type": 6
         }
       ],
       "relations": []
@@ -182,23 +222,29 @@
       "properties": [
         {
           "id": "1:8901317621537797171",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
           "id": "2:9107868772952747650",
-          "name": "group_address"
+          "name": "group_address",
+          "type": 6
         },
         {
           "id": "3:5217972138714581661",
-          "name": "node_mac"
+          "name": "node_mac",
+          "type": 9
         },
         {
           "id": "4:2516318144263716364",
-          "name": "element_address"
+          "name": "element_address",
+          "type": 6
         },
         {
           "id": "5:8871177379441554330",
-          "name": "model_id"
+          "name": "model_id",
+          "type": 9
         }
       ],
       "relations": []
@@ -210,7 +256,9 @@
       "properties": [
         {
           "id": "1:7188781705962571043",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 129
         }
       ],
       "relations": []
@@ -222,23 +270,29 @@
       "properties": [
         {
           "id": "1:5132177644339159331",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 129
         },
         {
           "id": "2:5093001171185856190",
-          "name": "key"
+          "name": "key",
+          "type": 9
         },
         {
           "id": "3:8650609204454367491",
-          "name": "name"
+          "name": "name",
+          "type": 9
         },
         {
           "id": "4:5718808049229855277",
-          "name": "iv_index"
+          "name": "iv_index",
+          "type": 6
         },
         {
           "id": "5:5493155612555148263",
-          "name": "seq"
+          "name": "seq",
+          "type": 6
         }
       ],
       "relations": []
@@ -250,19 +304,24 @@
       "properties": [
         {
           "id": "1:4607944272988452110",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
           "id": "2:4220962442625692771",
-          "name": "name"
+          "name": "name",
+          "type": 9
         },
         {
           "id": "3:8105937336370524875",
-          "name": "nodes"
+          "name": "nodes",
+          "type": 9
         },
         {
           "id": "4:7136323258114120562",
-          "name": "addr"
+          "name": "addr",
+          "type": 6
         }
       ],
       "relations": []
@@ -272,8 +331,8 @@
   "lastIndexId": "4:4507342942432212919",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
-  "modelVersion": 4,
-  "modelVersionParserMinimum": 4,
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [],

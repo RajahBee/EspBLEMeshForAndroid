@@ -86,7 +86,11 @@ public class ProvisionScanActivity extends ServiceActivity {
         mRefreshLayout.setEnabled(false);
 
         PermissionHelper mPermissionHelper = new PermissionHelper(this, REQUEST_PERMISSION);
-        mPermissionHelper.requestAuthorities(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION});
+        mPermissionHelper.requestAuthorities(new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT
+        });
     }
 
     @Override

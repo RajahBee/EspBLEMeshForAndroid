@@ -26,6 +26,8 @@ import java.util.List;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
+import io.objectbox.query.QueryBuilder.StringOrder;
+
 public class MeshObjectBox {
     private static MeshObjectBox sInstance;
 
@@ -76,7 +78,7 @@ public class MeshObjectBox {
     public void saveNode(String mac, String uuid, String key, String name, long unicastAddr, int elementCount,
                          long netKeyIndex) {
         Box<NodeDB> box = mBoxStore.boxFor(NodeDB.class);
-        NodeDB entity = box.query().equal(NodeDB_.mac, mac).build().findUnique();
+        NodeDB entity = box.query().equal(NodeDB_.mac, mac, StringOrder.CASE_INSENSITIVE).build().findUnique();
         if (entity == null) {
             entity = new NodeDB();
         }
@@ -93,7 +95,7 @@ public class MeshObjectBox {
 
     public void updateNode(String mac, long cid, long pid, long vid, long crpl, long features) {
         Box<NodeDB> box = mBoxStore.boxFor(NodeDB.class);
-        NodeDB entity = box.query().equal(NodeDB_.mac, mac).build().findUnique();
+        NodeDB entity = box.query().equal(NodeDB_.mac, mac, StringOrder.CASE_INSENSITIVE).build().findUnique();
         if (entity != null) {
             entity.cid = cid;
             entity.pid = pid;
@@ -113,13 +115,13 @@ public class MeshObjectBox {
         Box<GroupNodeDB> groupNodeBox = mBoxStore.boxFor(GroupNodeDB.class);
         List<GroupNodeDB> groupNodeDBS = groupNodeBox
                 .query()
-                .equal(GroupNodeDB_.node_mac, nodeMac)
+                .equal(GroupNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
         groupNodeBox.remove(groupNodeDBS);
 
         Box<NodeDB> nodeBox = mBoxStore.boxFor(NodeDB.class);
-        NodeDB nodeDB = nodeBox.query().equal(NodeDB_.mac, nodeMac).build().findUnique();
+        NodeDB nodeDB = nodeBox.query().equal(NodeDB_.mac, nodeMac, StringOrder.CASE_INSENSITIVE).build().findUnique();
         if (nodeDB != null) {
             // Delete addresses
             Box<AddressDB> addressBox = mBoxStore.boxFor(AddressDB.class);
@@ -143,7 +145,7 @@ public class MeshObjectBox {
     public List<ElementDB> loadElementsForNode(String nodeMac) {
         return mBoxStore.boxFor(ElementDB.class)
                 .query()
-                .equal(ElementDB_.node_mac, nodeMac)
+                .equal(ElementDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
     }
@@ -167,7 +169,7 @@ public class MeshObjectBox {
     public void deleteElementsForNode(String nodeMac) {
         Box<ElementDB> box = mBoxStore.boxFor(ElementDB.class);
         List<ElementDB> entities = box.query()
-                .equal(ElementDB_.node_mac, nodeMac)
+                .equal(ElementDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
         box.remove(entities);
@@ -196,7 +198,7 @@ public class MeshObjectBox {
     public ModelDB loadModel(String modelID, long elementAddr) {
         return mBoxStore.boxFor(ModelDB.class)
                 .query()
-                .equal(ModelDB_.model_id, modelID)
+                .equal(ModelDB_.model_id, modelID, StringOrder.CASE_INSENSITIVE)
                 .and()
                 .equal(ModelDB_.element_address, elementAddr)
                 .build()
@@ -214,7 +216,7 @@ public class MeshObjectBox {
     public void deleteModelsForNode(String nodeMac) {
         Box<ModelDB> box = mBoxStore.boxFor(ModelDB.class);
         List<ModelDB> entities = box.query()
-                .equal(ModelDB_.node_mac, nodeMac)
+                .equal(ModelDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
         box.remove(entities);
@@ -300,7 +302,7 @@ public class MeshObjectBox {
     public AppDB loadAppForAppKey(String key) {
         return mBoxStore.boxFor(AppDB.class)
                 .query()
-                .equal(AppDB_.key, key)
+                .equal(AppDB_.key, key, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .findUnique();
     }
@@ -336,7 +338,7 @@ public class MeshObjectBox {
                 .query()
                 .equal(AppNodeDB_.app_key_index, appKeyIndex)
                 .and()
-                .equal(AppNodeDB_.node_mac, nodeMac)
+                .equal(AppNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .findUnique();
         if (appNodeDB != null) {
@@ -352,7 +354,7 @@ public class MeshObjectBox {
     public List<AppNodeDB> loadAppNodeForNodeMac(String nodeMac) {
         return mBoxStore.boxFor(AppNodeDB.class)
                 .query()
-                .equal(AppNodeDB_.node_mac, nodeMac)
+                .equal(AppNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
     }
@@ -361,7 +363,7 @@ public class MeshObjectBox {
         Box<AppNodeDB> box = mBoxStore.boxFor(AppNodeDB.class);
         List<AppNodeDB> entities = box
                 .query()
-                .equal(AppNodeDB_.node_mac, nodeMac)
+                .equal(AppNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
         box.remove(entities);
@@ -407,11 +409,11 @@ public class MeshObjectBox {
                 .query()
                 .equal(GroupNodeDB_.group_address, groupAddress)
                 .and()
-                .equal(GroupNodeDB_.node_mac, nodeMac)
+                .equal(GroupNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .and()
                 .equal(GroupNodeDB_.element_address, elementAddr)
                 .and()
-                .equal(GroupNodeDB_.model_id, modelId)
+                .equal(GroupNodeDB_.model_id, modelId, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .findUnique();
         if (groupNodeDB == null) {
@@ -430,11 +432,11 @@ public class MeshObjectBox {
                 .query()
                 .equal(GroupNodeDB_.group_address, groupAddr)
                 .and()
-                .equal(GroupNodeDB_.node_mac, nodeMac)
+                .equal(GroupNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .and()
                 .equal(GroupNodeDB_.element_address, elementAddr)
                 .and()
-                .equal(GroupNodeDB_.model_id, modelId)
+                .equal(GroupNodeDB_.model_id, modelId, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .findUnique();
         if (groupNodeDB != null) {
@@ -448,7 +450,7 @@ public class MeshObjectBox {
                 .query()
                 .equal(GroupNodeDB_.group_address, groupAddr)
                 .and()
-                .equal(GroupNodeDB_.node_mac, nodeMac)
+                .equal(GroupNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .and()
                 .equal(GroupNodeDB_.element_address, elementAddr)
                 .build()
@@ -462,7 +464,7 @@ public class MeshObjectBox {
                 .query()
                 .equal(GroupNodeDB_.group_address, groupAddress)
                 .and()
-                .equal(GroupNodeDB_.node_mac, nodeMac)
+                .equal(GroupNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .findUnique();
         if (entity != null) {
@@ -484,7 +486,7 @@ public class MeshObjectBox {
         Box<GroupNodeDB> box = mBoxStore.boxFor(GroupNodeDB.class);
         List<GroupNodeDB> entities = box
                 .query()
-                .equal(GroupNodeDB_.node_mac, nodeMac)
+                .equal(GroupNodeDB_.node_mac, nodeMac, StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
         box.remove(entities);

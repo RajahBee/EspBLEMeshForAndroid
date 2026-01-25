@@ -40,6 +40,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.espressif.espblemesh.apptools.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,8 +48,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import libs.espressif.R;
 
 @SuppressWarnings("RestrictedApi")
 public class FloatingToolbar extends LinearLayoutCompat implements View.OnClickListener,
@@ -105,8 +104,8 @@ public class FloatingToolbar extends LinearLayoutCompat implements View.OnClickL
 
         // Set colorAccent as default color
         if (getBackground() == null) {
-            getContext().getTheme().resolveAttribute(R.attr.colorAccent, outValue, true);
-            setBackgroundResource(outValue.resourceId);
+            // getContext().getTheme().resolveAttribute(R.attr.colorAccent, outValue, true);
+            // setBackgroundResource(outValue.resourceId);
         }
 
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,

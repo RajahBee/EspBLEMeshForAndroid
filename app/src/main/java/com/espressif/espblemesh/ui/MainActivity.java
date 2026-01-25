@@ -88,21 +88,19 @@ public class MainActivity extends ServiceActivity {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.nav_add_network: {
-                    Intent intent = new Intent(MainActivity.this, NetworkAddActivity.class);
-                    startActivityForResult(intent, REQUEST_ADD_NETWORK);
-                    return true;
-                }
-                case R.id.nav_provision: {
-                    gotoProvision();
-                    return true;
-                }
-                case R.id.nav_settings: {
-                    Intent intent = new Intent(this, SettingsActivity.class);
-                    startActivityForResult(intent, REQUEST_SETTINGS);
-                    return true;
-                }
+            int id = menuItem.getItemId();
+
+            if (id == R.id.nav_add_network) {
+                Intent intent = new Intent(MainActivity.this, NetworkAddActivity.class);
+                startActivityForResult(intent, REQUEST_ADD_NETWORK);
+                return true;
+            } else if (id == R.id.nav_provision) {
+                gotoProvision();
+                return true;
+            } else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(intent, REQUEST_SETTINGS);
+                return true;
             }
 
             return false;
@@ -121,7 +119,11 @@ public class MainActivity extends ServiceActivity {
         mFab.setOnClickListener(v -> gotoProvision());
 
         PermissionHelper mPermissionHelper = new PermissionHelper(this, REQUEST_PERMISSION);
-        mPermissionHelper.requestAuthorities(new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
+        mPermissionHelper.requestAuthorities(new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT
+        });
     }
 
     @Override

@@ -127,37 +127,54 @@ public class MainService extends Service {
     }
 
     public boolean startScanBle() {
-        mLog.d("startScanBle()");
+        mLog.d("startScanBle() - Breadcrumb 1: Method entered."); //
+
         if (!mBTEnable) {
-            mLog.w("startScanBle() Bluetooth disable");
+            mLog.w("startScanBle() - Breadcrumb 2: Bluetooth is disabled. Exiting."); //
             return false;
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        // Android 12+ (API 31+) Security Check
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
+                    != PackageManager.PERMISSION_GRANTED) {
+                mLog.e("Breadcrumb 3: SCAN PERMISSION DENIED by System."); //
+                return false;
+            }
+        }
+
+        mLog.d("startScanBle() - Breadcrumb 4: Bluetooth scan permission confirmed."); //
+
+        // Original Location check
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            mLog.w("startScanBle() Location Permission denied");
+            mLog.e("Breadcrumb 5: LOCATION PERMISSION DENIED."); //
             return false;
         }
 
         if (mScanning) {
-            mLog.d("startScanBle() scan is running");
+            mLog.d("startScanBle() - Breadcrumb 6: Scan is already running."); //
             return true;
         }
+
+        mLog.d("startScanBle() - Breadcrumb 7: All permissions pass. Fetching scanner..."); //
 
         BluetoothLeScanner scanner = BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
         if (scanner != null) {
             mScanning = true;
             ScanSettings settings = new ScanSettings.Builder()
-                    .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
+                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY) // Changed to high-performance for testing
                     .build();
+
+            mLog.d("startScanBle() - Breadcrumb 8: Calling startScan() now!"); //
             scanner.startScan(null, settings, mBleCallback);
-            mLog.d("startScanBle() success");
+            mLog.d("startScanBle() - Breadcrumb 9: success returned from system."); //
             return true;
         } else {
-            mLog.w("startScanBle() scanner is null");
+            mLog.w("startScanBle() - Breadcrumb 10: FATAL - Bluetooth scanner is NULL."); //
             return false;
         }
     }
-
     public void stopScanBle() {
         mLog.d("stopScanBle()");
         BluetoothLeScanner scanner = BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();

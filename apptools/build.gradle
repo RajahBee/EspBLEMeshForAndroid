@@ -1,13 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    namespace "com.espressif.espblemesh.apptools"
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 34
     }
 
     buildTypes {
@@ -16,6 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
