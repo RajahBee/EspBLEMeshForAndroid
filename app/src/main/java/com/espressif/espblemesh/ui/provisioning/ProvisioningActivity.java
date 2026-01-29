@@ -2,65 +2,57 @@
 package com.espressif.espblemesh.ui.provisioning;
 
 // Import statements for Android SDK classes.
-import android.bluetooth.BluetoothGatt; // Provides Bluetooth GATT functionality to connect to BLE devices.
-import android.bluetooth.BluetoothGattCallback; // Abstract class for GATT client callbacks.
-import android.bluetooth.BluetoothGattCharacteristic; // Represents a GATT characteristic of a service.
-import android.bluetooth.BluetoothGattDescriptor; // Represents a GATT descriptor.
-import android.bluetooth.BluetoothProfile; // Provides profile constants like STATE_CONNECTED.
-import android.bluetooth.le.ScanResult; // Represents a single BLE device found during a scan.
-import android.content.Intent; // Used to start new activities and pass data.
-import android.os.Bundle; // Used to pass data between Android components and save state.
-import android.view.View; // Basic building block for UI components.
-import android.view.ViewGroup; // A view that can contain other views.
-import android.widget.ArrayAdapter; // An adapter for populating views like a Spinner from an array.
-import android.widget.Button; // A standard button UI element.
-import android.widget.CheckBox; // A UI element that can be checked or unchecked.
-import android.widget.EditText; // A UI element for text input.
-import android.widget.Spinner; // A dropdown list for selecting one item from a set.
-import android.widget.TextView; // A UI element for displaying text.
 
-// Import statements for AndroidX (Jetpack) libraries, providing backward compatibility and new features.
-import androidx.annotation.NonNull; // Annotation indicating a parameter or return value can never be null.
-import androidx.annotation.Nullable; // Annotation indicating a parameter or return value can be null.
-import androidx.appcompat.widget.Toolbar; // A standard app toolbar.
-import androidx.recyclerview.widget.RecyclerView; // A flexible view for displaying a list of items.
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.ScanResult;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-// Imports from the Espressif BLE Mesh SDK. These are the core components for mesh operations.
-import com.espressif.blemesh.client.IMeshMessager; // Interface for sending mesh messages to a provisioned node.
-import com.espressif.blemesh.client.IMeshProvisioner; // Interface for handling the provisioning process.
-import com.espressif.blemesh.client.MeshGattClient; // The main client for managing GATT connections for mesh.
-import com.espressif.blemesh.client.callback.MeshGattCallback; // Callbacks for mesh-specific GATT events.
-import com.espressif.blemesh.client.callback.MessageCallback; // Callbacks for mesh message statuses (e.g., AppKeyStatus).
-import com.espressif.blemesh.client.callback.ProvisioningCallback; // Callbacks for the provisioning process (success/fail).
-import com.espressif.blemesh.constants.MeshConstants; // Constants used by the mesh SDK.
-import com.espressif.blemesh.model.App; // Data model for an Application Key.
-import com.espressif.blemesh.model.Network; // Data model for a mesh network.
-import com.espressif.blemesh.model.Node; // Data model for a node in the mesh network.
-import com.espressif.blemesh.model.message.custom.FastProvInfoSetMessage; // A custom message for fast provisioning setup.
-import com.espressif.blemesh.model.message.standard.AppKeyAddMessage; // Standard message to add an AppKey to a node.
-import com.espressif.blemesh.model.message.standard.CompositionDataGetMessage; // Standard message to get a node's capabilities.
-import com.espressif.blemesh.user.MeshUser; // Singleton class to manage user and network data.
-import com.espressif.blemesh.utils.MeshUtils; // Utility functions for the mesh SDK.
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
-// Imports specific to this application's project files.
-import com.espressif.espblemesh.R; // Auto-generated class holding resource IDs.
-import com.espressif.espblemesh.app.BaseActivity; // A custom base Activity for this app.
-import com.espressif.espblemesh.constants.Constants; // App-specific constants.
-import com.espressif.espblemesh.ui.settings.SettingsActivity; // The settings screen.
-import com.espressif.espblemesh.utils.Utils; // Application-specific utility functions.
+import com.espressif.blemesh.client.IMeshMessager;
+import com.espressif.blemesh.client.IMeshProvisioner;
+import com.espressif.blemesh.client.MeshGattClient;
+import com.espressif.blemesh.client.callback.MeshGattCallback;
+import com.espressif.blemesh.client.callback.MessageCallback;
+import com.espressif.blemesh.client.callback.ProvisioningCallback;
+import com.espressif.blemesh.constants.MeshConstants;
+import com.espressif.blemesh.model.App;
+import com.espressif.blemesh.model.Network;
+import com.espressif.blemesh.model.Node;
+import com.espressif.blemesh.model.message.custom.FastProvInfoSetMessage;
+import com.espressif.blemesh.model.message.standard.AppKeyAddMessage;
+import com.espressif.blemesh.model.message.standard.CompositionDataGetMessage;
+import com.espressif.blemesh.user.MeshUser;
+import com.espressif.blemesh.utils.MeshUtils;
+import com.espressif.espblemesh.R;
+import com.espressif.espblemesh.app.BaseActivity;
+import com.espressif.espblemesh.constants.Constants;
+import com.espressif.espblemesh.ui.settings.SettingsActivity;
+import com.espressif.espblemesh.utils.Utils;
 
-// Imports for handling lists and collections.
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
-// Imports for asynchronous programming using RxJava.
-import io.reactivex.Observable; // Emits a sequence of items.
-import io.reactivex.android.schedulers.AndroidSchedulers; // RxJava scheduler that runs tasks on the Android main UI thread.
-import io.reactivex.schedulers.Schedulers; // RxJava schedulers for running tasks on different threads.
-import libs.espressif.log.EspLog; // A logging utility.
-import libs.espressif.utils.TextUtils; // Utilities for string manipulation.
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import libs.espressif.log.EspLog;
+import libs.espressif.utils.TextUtils;
 
 /**
  * ProvisioningActivity handles the user interface and logic for configuring and provisioning a single
@@ -95,8 +87,6 @@ public class ProvisioningActivity extends BaseActivity {
     private EditText mFastProvCountET; // Input for how many subsequent devices to fast provision.
     private Spinner mNetworkSp; // Dropdown to select which mesh network to join.
     private List<Network> mNetworkList; // The list of available networks.
-    private List<String> mNetNameList; // The list of network names for the spinner.
-    private Button mOKBtn; // The "OK" button to start the provisioning process.
     private TextView mHintTV; // A text view to display hints or error messages.
 
     // --- State Flags ---
@@ -174,7 +164,8 @@ public class ProvisioningActivity extends BaseActivity {
             return index1.compareTo(index2);
         });
         // Create a list of names from the network objects for the spinner.
-        mNetNameList = new ArrayList<>();
+        // The list of network names for the spinner.
+        List<String> mNetNameList = new ArrayList<>();
         for (Network network : mNetworkList) {
             mNetNameList.add(network.getName());
         }
@@ -185,7 +176,8 @@ public class ProvisioningActivity extends BaseActivity {
         mNetworkSp.setAdapter(netAdapter);
 
         // Setup the "OK" button to start the process.
-        mOKBtn = findViewById(R.id.config_ok_btn);
+        // The "OK" button to start the provisioning process.
+        Button mOKBtn = findViewById(R.id.config_ok_btn);
         mOKBtn.setOnClickListener(v -> {
             mWillProv = true; // Set the flag indicating the user wants to provision.
             connectGatt(); // Start the GATT connection process.
@@ -273,7 +265,7 @@ public class ProvisioningActivity extends BaseActivity {
     /**
      * ViewHolder for the RecyclerView that displays status messages.
      */
-    private class MsgHolder extends RecyclerView.ViewHolder {
+    private static class MsgHolder extends RecyclerView.ViewHolder {
         TextView text1;
 
         MsgHolder(View itemView) {
@@ -543,7 +535,7 @@ public class ProvisioningActivity extends BaseActivity {
                         updateMsg(msg);
                         // If we weren't expecting to disconnect, try to reconnect.
                         if (mWillProv) {
-                            runOnUiThread(() -> connectGatt());
+                            runOnUiThread(ProvisioningActivity.this::connectGatt);
                         }
                         break;
                     }
