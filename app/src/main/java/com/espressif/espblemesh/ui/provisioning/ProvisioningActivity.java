@@ -6,6 +6,7 @@ package com.espressif.espblemesh.ui.provisioning;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.os.Bundle;
@@ -115,8 +116,17 @@ public class ProvisioningActivity extends BaseActivity {
         long usedAppKeyIndex = SettingsActivity.getUsedAppKeyIndex(this);
         mApp = mUser.getAppForKeyIndex(usedAppKeyIndex);
         // Get the ScanResult of the chosen device, passed from the previous activity.
-        mScanResult = getIntent().getParcelableExtra(Constants.KEY_SCAN_RESULT);
-
+        // NEW, CORRECTED CODE
+        Intent intent = getIntent();
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            // For Android 13 (API 33) and above, use the new type-safe method
+            mScanResult = intent.getParcelableExtra(Constants.KEY_SCAN_RESULT, ScanResult.class);
+        } else {
+            // For older versions, use the deprecated method.
+            // The warning is now suppressed by the annotation on the method.
+            mScanResult = intent.getParcelableExtra(Constants.KEY_SCAN_RESULT);
+        }
+        
         // --- Initialize UI Views ---
         mProgressView = findViewById(R.id.progress);
         mCancelBtn = findViewById(R.id.cancel_btn);
@@ -246,7 +256,10 @@ public class ProvisioningActivity extends BaseActivity {
         mMeshGattClient = new MeshGattClient(mScanResult.getDevice());
         mMeshGattClient.setAppAddr(Constants.APP_ADDRESS_DEFAULT); // Set the local address for this client.
         // Set the device's UUID, which is necessary for provisioning.
-        mMeshGattClient.setDeviceUUID(MeshUtils.getProvisioningUUID(mScanResult.getScanRecord().getBytes()));
+        ScanRecord scanRecord = mScanResult.getScanRecord();
+        if (scanRecord != null) {
+            mMeshGattClient.setDeviceUUID(MeshUtils.getProvisioningUUID(scanRecord.getBytes()));
+        }
         mMeshGattClient.setGattCallback(new GattCallback()); // Set low-level GATT callbacks.
         mMeshGattClient.setMeshCallback(new MeshCB()); // Set mesh-specific callbacks.
         mMeshGattClient.connect(getApplicationContext()); // Start the connection attempt.
@@ -422,15 +435,7 @@ public class ProvisioningActivity extends BaseActivity {
                 mLog.d("Request to FastProv");
                 int provCount = TextUtils.isEmpty(mFastProvCountET.getText()) ? 100 :
                         Integer.parseInt(mFastProvCountET.getText().toString());
-                byte[] devUUID = mMessager.getDeviceUUID();
-                // Create and send the message with all the fast provisioning parameters.
-                FastProvInfoSetMessage message = new FastProvInfoSetMessage(mNode, mApp);
-                message.setProvCount(provCount);
-                message.setUnicastAddressMin(0x0400L); // Set the starting address for new nodes.
-                message.setPrimaryProvisionerAddress(mApp.getUnicastAddr());
-                message.setMatchValue(new byte[]{devUUID[0], devUUID[1]});
-                message.setGroupAddress(MeshConstants.ADDRESS_GROUP_MIN);
-                message.setAction((1 << 7) | 1);
+                FastProvInfoSetMessage message = getFastProvInfoSetMessage(provCount);
                 mMessager.fastProvInfoSet(message);
             } else {
                 // If not fast provisioning, the process is complete.
@@ -443,6 +448,20 @@ public class ProvisioningActivity extends BaseActivity {
                 finish();
             }
         }
+    }
+
+    @NonNull
+    private FastProvInfoSetMessage getFastProvInfoSetMessage(int provCount) {
+        byte[] devUUID = mMessager.getDeviceUUID();
+        // Create and send the message with all the fast provisioning parameters.
+        FastProvInfoSetMessage message = new FastProvInfoSetMessage(mNode, mApp);
+        message.setProvCount(provCount);
+        message.setUnicastAddressMin(0x0400L); // Set the starting address for new nodes.
+        message.setPrimaryProvisionerAddress(mApp.getUnicastAddr());
+        message.setMatchValue(new byte[]{devUUID[0], devUUID[1]});
+        message.setGroupAddress(MeshConstants.ADDRESS_GROUP_MIN);
+        message.setAction((1 << 7) | 1);
+        return message;
     }
 
     /**

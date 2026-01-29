@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.espressif.espblemesh"
+    namespace = "com.espressif.espblemesh"
     compileSdkVersion 34
     defaultConfig {
         applicationId "com.espressif.espblemesh"

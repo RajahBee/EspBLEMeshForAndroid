@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'io.objectbox'
 
 android {
-    namespace "com.espressif.blemesh"
+    namespace = "com.espressif.blemesh"
     compileSdkVersion 34
 
     defaultConfig {

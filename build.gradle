@@ -4,7 +4,7 @@ buildscript {
     repositories {
         google()
         mavenCentral() // Modern replacement for jcenter
-        maven { url "https://plugins.gradle.org/m2/" } // Alternative backup
+        maven { url = 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.13.2'
@@ -16,9 +16,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        // Try the HTTPS version of the standard repo
-        maven { url "https://repo.maven.apache.org/maven2" }
-        maven { url "https://jitpack.io" }
+        maven { url = "https://jitpack.io" }
     }
 }
 
